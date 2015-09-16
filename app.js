@@ -23,9 +23,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret:'ssshhhh', 
+  secret:'secret word', 
   resave:false, 
-  saveUninitialized: true, 
+  saveUninitialized: false, 
   store: new MongoStore({mongooseConnection:db.connection})
 }));
 app.use(express.static(path.join(__dirname, 'public')));
