@@ -6,10 +6,9 @@ var hash = require('../pass').hash;
 /* GET home page. */
 router.get("/", function (req, res) {
     if (req.session.user) {
-        console.log('session: '+JSON.stringify(req.session));
-        res.send("Welcome " + req.session.user.username + "<br>" + "<a href='/logout'>logout</a>");
+        res.render("welcome", {username: req.session.user.username});
     } else {
-        res.send("<a href='/login'> Login</a>" + "<br>" + "<a href='/signup'> Sign Up</a>");
+        res.render("welcome")
     }
 });
 
@@ -25,8 +24,7 @@ router.post("/login", function (req, res) {
                 res.redirect('/');
             });
         } else {
-            // req.session.error = 'Authentication failed, please check your ' + ' username and password.';
-            res.redirect('/login');
+            res.render('login', { error: 'Authentication failed, please check your  username and password.'} );
         }
     });
 });
@@ -68,10 +66,6 @@ router.get('/logout', function (req, res) {
     req.session.destroy(function () {
         res.redirect('/');
     });
-});
-
-router.get('/profile', db.requiredAuthentication, function (req, res) {
-    res.send('Profile page of '+ req.session.user.username +'<br>'+' click to <a href="/logout">logout</a>');
 });
 
 module.exports = router;

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    if username
+        div( style='text-align:right')
+            a(href='/logout') Logout
+        p Welcome #{username}
+    else
+        p No user
+        p
+            a(href='/login') Login
+        p
+            a(href='/signup') Signup
