@@ -40,7 +40,6 @@ router.get("/signup", function (req, res) {
 router.post("/signup", db.userExist, function (req, res) {
     var password = req.body.password;
     var username = req.body.username;
-    console.log('username: '+username+', password: '+password);
     db.createUser(username, password, function(err, user){
         if(user){
             req.session.regenerate(function(){

@@ -19,7 +19,7 @@ function createUser(username, password, fn){
     hash(password, function (err, salt, hash) {
         console.log('hashing password: '+password);
         if (err) throw err;
-        var user = new db.User({
+        var user = new User({
             username: username,
             salt: salt,
             hash: hash,
@@ -79,6 +79,7 @@ function userExist(req, res, next) {
 }
 
 module.exports = {
+    createUser: createUser,
     authenticate: authenticate,
     requiredAuthentication: requiredAuthentication,
     userExist: userExist,
