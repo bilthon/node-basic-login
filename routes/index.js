@@ -41,24 +41,13 @@ router.post("/signup", db.userExist, function (req, res) {
     var password = req.body.password;
     var username = req.body.username;
     console.log('username: '+username+', password: '+password);
-    hash(password, function (err, salt, hash) {
-        console.log('hashing password: '+password);
-        if (err) throw err;
-        var user = new db.User({
-            username: username,
-            salt: salt,
-            hash: hash,
-        }).save(function (err, newUser) {
-            if (err) throw err;
-            db.authenticate(newUser.username, password, function(err, user){
-                if(user){
-                    req.session.regenerate(function(){
-                        req.session.user = user;
-                        res.redirect('/');
-                    });
-                }
+    db.createUser(username, password, function(err, user){
+        if(user){
+            req.session.regenerate(function(){
+                req.session.user = user;
+                res.redirect('/');
             });
-        });
+        }
     });
 });
 

@@ -15,6 +15,21 @@ var UserSchema = new mongoose.Schema({
 
 var User = connection.model('users', UserSchema);
 
+function createUser(username, password, fn){
+    hash(password, function (err, salt, hash) {
+        console.log('hashing password: '+password);
+        if (err) throw err;
+        var user = new db.User({
+            username: username,
+            salt: salt,
+            hash: hash,
+        }).save(function (err, newUser) {
+            if (err) throw err;
+            authenticate(newUser.username, password, fn);
+        });
+    });
+}
+
 /*
 Helper Functions
 */
@@ -50,7 +65,6 @@ function requiredAuthentication(req, res, next) {
 }
 
 function userExist(req, res, next) {
-    console.log('userExist. User: '+User);
     User.count({
         username: req.body.username
     }, function (err, count) {
